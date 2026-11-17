@@ -40,7 +40,7 @@ const onScroll = () => {
 
   // Hero photo parallax
   if (heroBg && !reduceMotion && y < window.innerHeight * 1.2) {
-    heroBg.style.setProperty("--parallax", `${y * 0.3}px`);
+    heroBg.style.setProperty("--parallax", `${y * 0.15}px`);
   }
   ticking = false;
 };
@@ -173,7 +173,7 @@ document.querySelectorAll(".reveal, .reveal-img").forEach((el) => {
   groups.get(parent).push(el);
 });
 groups.forEach((els) =>
-  els.forEach((el, i) => el.style.setProperty("--reveal-delay", `${Math.min(i, 6) * 0.08}s`))
+  els.forEach((el, i) => el.style.setProperty("--reveal-delay", `${Math.min(i, 4) * 0.05}s`))
 );
 
 // Clipped photos can't be detected directly, so watch their containers instead
@@ -194,7 +194,7 @@ if ("IntersectionObserver" in window) {
             setTimeout(() => {
               el.classList.remove("reveal");
               el.style.removeProperty("--reveal-delay");
-            }, 1600);
+            }, 1100);
           }
         }
       });
