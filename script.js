@@ -9,6 +9,9 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 // ---------- Header: solid once scrolled, hides on scroll down ----------
 const heroBg = document.querySelector(".hero-bg");
+const mobileCta = document.querySelector("[data-mobile-cta]");
+const topSection = document.querySelector(".hero, .page-hero");
+const endSections = [...document.querySelectorAll(".cta, .site-footer")];
 let lastY = window.scrollY;
 let ticking = false;
 
@@ -23,6 +26,17 @@ const onScroll = () => {
   }
   if (y < 400) header.classList.remove("is-hidden");
   lastY = y;
+
+  // Phone call/quote bar: show after the top section, hide near the page's own
+  // calls to action, and while the menu or photo viewer is open
+  if (mobileCta) {
+    const pastTop = y > (topSection ? topSection.offsetHeight * 0.7 : 300);
+    const nearEnd = endSections.some((el) => el.getBoundingClientRect().top < window.innerHeight - 40);
+    const overlayOpen = menuOpen || document.body.classList.contains("lightbox-open");
+    const show = pastTop && !nearEnd && !overlayOpen;
+    mobileCta.classList.toggle("is-visible", show);
+    mobileCta.inert = !show;
+  }
 
   // Hero photo parallax
   if (heroBg && !reduceMotion && y < window.innerHeight * 1.2) {
@@ -59,6 +73,32 @@ document.querySelectorAll(".hero h1, .page-hero h1").forEach((h1) => {
   h1.classList.add("is-split");
 });
 
+// ---------- In-page jumps (e.g. "15 Google reviews" → #reviews) ----------
+// The browser's own jump leaves room for the header, but the header hides
+// itself when scrolling down — leaving a gap. Work out the landing spot here.
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a[href*='#']");
+  if (!link || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  const url = new URL(link.href, location.href);
+  const samePage =
+    url.origin === location.origin &&
+    url.pathname.replace(/index\.html$/, "") === location.pathname.replace(/index\.html$/, "");
+  if (!samePage || !url.hash || url.hash === "#") return;
+  const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  if (!target) return;
+
+  e.preventDefault();
+  const targetY = target.getBoundingClientRect().top + window.scrollY;
+  const goingDown = targetY > window.scrollY;
+  // Going down past the top area: the header will tuck away, so no offset.
+  // Going up (or landing near the top): the header shows, so clear it.
+  const offset = goingDown && targetY > 400 ? 0 : header.offsetHeight;
+  window.scrollTo({ top: Math.max(0, targetY - offset), behavior: reduceMotion ? "auto" : "smooth" });
+  history.pushState(null, "", url.hash);
+  if (goingDown && targetY > 400) header.classList.add("is-hidden");
+  else header.classList.remove("is-hidden");
+});
+
 // ---------- Page fade-out on internal links ----------
 if (!reduceMotion) {
   document.addEventListener("click", (e) => {
@@ -88,6 +128,7 @@ const setNav = (open) => {
   document.body.classList.toggle("nav-open", open);
   navToggle.setAttribute("aria-expanded", String(open));
   navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  onScroll();
 };
 
 navToggle.addEventListener("click", () => {
@@ -226,6 +267,7 @@ if (lightbox) {
     opener = card;
     lightbox.hidden = false;
     document.body.classList.add("lightbox-open");
+    onScroll();
     show(0);
     lbClose.focus();
   };
@@ -233,6 +275,7 @@ if (lightbox) {
   const close = () => {
     lightbox.hidden = true;
     document.body.classList.remove("lightbox-open");
+    onScroll();
     lbImg.removeAttribute("srcset");
     lbImg.removeAttribute("src");
     if (opener) opener.focus();
