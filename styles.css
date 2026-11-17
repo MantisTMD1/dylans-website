@@ -1307,9 +1307,10 @@ body.nav-open .site-header::before {
     padding: calc(var(--header-height) + 1.5rem) var(--gutter) max(2rem, env(safe-area-inset-bottom));
     overflow-y: auto;
     background:
-      radial-gradient(110% 70% at 100% 0%, rgba(162, 182, 162, 0.2) 0%, rgba(162, 182, 162, 0) 60%),
-      repeating-linear-gradient(100deg, rgba(244, 239, 230, 0.03) 0 1px, transparent 1px 26px),
-      var(--forest);
+      radial-gradient(120% 60% at 100% 0%, rgba(201, 181, 149, 0.14) 0%, rgba(201, 181, 149, 0) 60%),
+      radial-gradient(90% 50% at 0% 100%, rgba(44, 76, 35, 0.35) 0%, rgba(44, 76, 35, 0) 70%),
+      repeating-linear-gradient(100deg, rgba(244, 239, 230, 0.025) 0 1px, transparent 1px 26px),
+      var(--charcoal);
     color: var(--cream);
     opacity: 0;
     visibility: hidden;
@@ -1445,7 +1446,7 @@ body.nav-open .site-header::before {
   .site-nav .nav-contact a:hover {
     background: var(--cream);
     border-color: var(--cream);
-    color: var(--forest);
+    color: var(--charcoal);
   }
 
   body.nav-open {
