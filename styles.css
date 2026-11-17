@@ -2209,10 +2209,8 @@ body.lightbox-open {
    Motion
    ========================================================== */
 
-/* Page fade in / out between pages */
-body {
-  animation: page-in 0.4s var(--ease) both;
-}
+/* Page fades out when leaving. No fade-in on load: content painted at
+   opacity 0 is ignored by Largest Contentful Paint, which breaks the metric. */
 
 body.is-leaving {
   animation: page-out 0.25s ease forwards;
@@ -2222,10 +2220,6 @@ body.is-leaving {
   to { opacity: 0; }
 }
 
-@keyframes page-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
 /* Header tucks away when scrolling down, returns when scrolling up */
 .site-header {
