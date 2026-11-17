@@ -2525,3 +2525,8 @@ img.lqip {
   background-repeat: no-repeat;
   background-color: rgba(201, 181, 149, 0.35);
 }
+
+/* Hero photo: herringbone floor, centred on the seam */
+.hero-bg {
+  object-position: 50% 40%;
+}
