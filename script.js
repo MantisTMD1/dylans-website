@@ -1,3 +1,6 @@
+// Developer credit in the browser console
+console.log("Need a website? Reach out here: https://evanstmartindevelopment.com/");
+
 // Mark that JS is running (enables scroll-reveal styles)
 document.documentElement.classList.add("js");
 
