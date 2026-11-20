@@ -554,34 +554,6 @@ body.nav-open .site-header::before {
   color: var(--forest);
 }
 
-.scroll-cue {
-  position: absolute;
-  right: var(--gutter);
-  bottom: clamp(4rem, 10vh, 7rem);
-  width: 28px;
-  height: 46px;
-  border: 1px solid rgba(244, 239, 230, 0.5);
-  border-radius: 999px;
-}
-
-.scroll-cue span {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 3px;
-  height: 8px;
-  margin-left: -1.5px;
-  border-radius: 2px;
-  background: var(--cream);
-  animation: scroll-dot 1.8s ease-in-out infinite;
-}
-
-@keyframes scroll-dot {
-  0% { opacity: 0; transform: translateY(0); }
-  30% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(16px); }
-}
-
 /* ---------- About ---------- */
 .about {
   /* a shade deeper than the reviews section above it */
@@ -1528,10 +1500,6 @@ body.nav-open .site-header::before {
 
   .logo img {
     height: 44px;
-  }
-
-  .scroll-cue {
-    display: none;
   }
 
   .hero-actions,
