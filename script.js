@@ -332,26 +332,90 @@ const quoteForm = document.querySelector("[data-quote-form]");
 
 if (quoteForm) {
   const errorBox = quoteForm.querySelector("[data-form-error]");
+  const otherToggle = quoteForm.querySelector("[data-other-toggle]");
+  const otherField = quoteForm.querySelector("[data-other-field]");
+  const otherInput = quoteForm.querySelector("#other-service");
   const QUOTE_EMAIL = "floors@groovebox.info";
 
-  quoteForm.addEventListener("input", (e) => {
-    if (e.target.hasAttribute("aria-invalid")) e.target.removeAttribute("aria-invalid");
+  const NAME_RE = /^[\p{L}][\p{L}' .-]*$/u;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+  const phoneDigits = (value) => {
+    let d = value.replace(/\D/g, "");
+    if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+    return d;
+  };
+
+  // Each rule returns an error message, or "" when the value is fine
+  const rules = {
+    "first-name": (v) =>
+      !v ? "Please enter your first name." :
+      !NAME_RE.test(v) ? "Use letters only, please." : "",
+    "last-name": (v) =>
+      !v ? "Please enter your last name." :
+      !NAME_RE.test(v) ? "Use letters only, please." : "",
+    email: (v) =>
+      !v ? "Please enter your email so we can reply." :
+      !EMAIL_RE.test(v) ? "That email doesn’t look right — check for a typo, e.g. name@example.com." : "",
+    phone: (v) => {
+      if (!v) return "";
+      if (/[a-z]/i.test(v)) return "Use numbers only, e.g. (608) 555-0123.";
+      const d = phoneDigits(v);
+      if (d.length !== 10) return "Please enter a 10-digit phone number, e.g. (608) 555-0123.";
+      if (/^[01]/.test(d) || /^\d{3}[01]/.test(d)) return "That phone number isn’t valid — please double-check it.";
+      return "";
+    },
+    "other-service": (v) =>
+      otherToggle.checked && !v ? "Tell us what service you need." : "",
+  };
+
+  const fields = Object.keys(rules).map((id) => quoteForm.querySelector(`#${id}`));
+
+  const validate = (field) => {
+    const message = rules[field.id](field.value.trim());
+    const errorEl = quoteForm.querySelector(`#${field.id}-error`);
+    if (message) field.setAttribute("aria-invalid", "true");
+    else field.removeAttribute("aria-invalid");
+    errorEl.textContent = message;
+    errorEl.hidden = !message;
+    return !message;
+  };
+
+  fields.forEach((field) => {
+    // Check a field once the visitor leaves it, then re-check live while it's wrong
+    field.addEventListener("blur", () => {
+      if (field.value.trim() || field.dataset.touched) validate(field);
+      field.dataset.touched = "1";
+      if (field.id === "phone" && !field.getAttribute("aria-invalid")) {
+        const d = phoneDigits(field.value);
+        if (d.length === 10) field.value = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+      }
+    });
+    field.addEventListener("input", () => {
+      if (field.getAttribute("aria-invalid")) validate(field);
+      if (!quoteForm.querySelector('[aria-invalid="true"]')) errorBox.hidden = true;
+    });
+  });
+
+  otherToggle.addEventListener("change", () => {
+    otherField.hidden = !otherToggle.checked;
+    if (otherToggle.checked) {
+      otherInput.focus();
+    } else {
+      otherInput.value = "";
+      validate(otherInput);
+    }
   });
 
   quoteForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const required = [...quoteForm.querySelectorAll("[required]")];
-    const invalid = required.filter((field) => !field.checkValidity());
-    required.forEach((field) =>
-      field.toggleAttribute("aria-invalid", invalid.includes(field))
-    );
-
+    const invalid = fields.filter((field) => !validate(field));
     if (invalid.length) {
-      const emailBad = invalid.some((f) => f.type === "email" && f.value.trim());
-      errorBox.textContent = emailBad
-        ? "Please enter a valid email address."
-        : "Please fill in your name and email so we can get back to you.";
+      errorBox.textContent =
+        invalid.length === 1
+          ? "Please fix the highlighted field above."
+          : `Please fix the ${invalid.length} highlighted fields above.`;
       errorBox.hidden = false;
       invalid[0].focus();
       return;
@@ -359,12 +423,15 @@ if (quoteForm) {
     errorBox.hidden = true;
 
     const data = new FormData(quoteForm);
-    const name = `${data.get("first_name")} ${data.get("last_name")}`.trim();
-    const services = data.getAll("services").join(", ") || "Not specified";
+    const name = `${data.get("first_name").trim()} ${data.get("last_name").trim()}`;
+    const services = data
+      .getAll("services")
+      .map((s) => (s === "Other" ? `Other (${data.get("other_service").trim()})` : s))
+      .join(", ") || "Not specified";
     const lines = [
       `Name: ${name}`,
-      `Email: ${data.get("email")}`,
-      `Phone: ${data.get("phone") || "—"}`,
+      `Email: ${data.get("email").trim()}`,
+      `Phone: ${data.get("phone").trim() || "—"}`,
       `Services: ${services}`,
       `Size: ${data.get("size") || "—"}`,
       `Heard about us: ${data.get("source") || "—"}`,

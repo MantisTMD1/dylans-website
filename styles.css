@@ -318,7 +318,8 @@ body.nav-open .site-header::before {
 }
 
 .logo img {
-  height: 80px;
+  /* just the "g" mark; the full logo with "hardwood flooring" is in the footer */
+  height: 52px;
   width: auto;
   /* Logo is dark green; show it cream over the hero photo */
   filter: brightness(0) invert(0.95) sepia(0.15);
@@ -327,7 +328,7 @@ body.nav-open .site-header::before {
 
 .site-header.is-scrolled .logo img {
   filter: none;
-  height: 64px;
+  height: 42px;
 }
 
 .site-nav ul {
@@ -579,7 +580,8 @@ body.nav-open .site-header::before {
 
 /* ---------- About ---------- */
 .about {
-  background: var(--cream);
+  /* a shade deeper than the reviews section above it */
+  background: #ece4d6;
 }
 
 .about-grid {
@@ -1204,7 +1206,7 @@ body.nav-open .site-header::before {
 }
 
 .footer-logo {
-  width: 84px;
+  width: 130px;
   height: auto;
   /* Dark green logo shown in tan so it reads on charcoal */
   filter: brightness(0) invert(0.78) sepia(0.45) saturate(1.1);
@@ -1521,7 +1523,7 @@ body.nav-open .site-header::before {
   }
 
   .logo img {
-    height: 64px;
+    height: 44px;
   }
 
   .scroll-cue {
@@ -2079,6 +2081,41 @@ body.lightbox-open {
 
 .quote-form [aria-invalid="true"] {
   border-color: #a33a2a;
+  box-shadow: 0 0 0 3px rgba(163, 58, 42, 0.12);
+}
+
+.field-error {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #8f2f21;
+}
+
+.other-field {
+  margin-top: 0.75rem;
+}
+
+.aside-links .aside-phone {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(244, 239, 230, 0.12);
+  font-family: var(--font-display);
+}
+
+.aside-links .aside-phone a {
+  display: inline;
+  padding: 0;
+  border: 0;
+}
+
+.aside-links .aside-phone span a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(201, 181, 149, 0.5);
 }
 
 .option-group {

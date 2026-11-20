@@ -14,13 +14,15 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Groove Hardwood Flooring">
   <meta property="og:title" content="Quick Quote — Groove Hardwood Flooring">
-  <meta property="og:description" content="Request a quick quote from Groove Hardwood Flooring.">
-  <meta property="og:url" content="https://groovefloors.com/quick-quote.html">
-  <meta property="og:image" content="https://groovefloors.com/images/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="A floor sander at work on a hardwood floor">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:url" content="https://mantistmd1.github.io/dylans-website/quick-quote.html">
+  <meta property="og:image" content="https://mantistmd1.github.io/dylans-website/images/og-share.jpg">
+  <meta property="og:image:width" content="1500">
+  <meta property="og:image:height" content="606">
+  <meta property="og:image:alt" content="Groove Hardwood Flooring logo">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Quick Quote — Groove Hardwood Flooring">
+  <meta name="twitter:image" content="https://mantistmd1.github.io/dylans-website/images/og-share.jpg">
+  <meta name="twitter:url" content="https://mantistmd1.github.io/dylans-website/quick-quote.html">
   <link rel="preload" href="fonts/fraunces-normal-300-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/fraunces-italic-300-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/poppins-normal-300.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,17 +37,17 @@
   <header class="site-header" data-header>
     <div class="container header-inner">
       <a href="index.html" class="logo" aria-label="Groove Hardwood Flooring — home">
-        <img src="images/logo-200.webp" alt="Groove Hardwood Flooring">
+        <img src="images/logo-mark.webp" width="164" height="200" alt="Groove Hardwood Flooring">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
         <span></span><span></span>
       </button>
       <nav id="site-nav" class="site-nav">
         <ul>
-          <li><a href="index.html#about">about</a></li>
           <li><a href="index.html#services">services</a></li>
           <li><a href="portfolio.html">portfolio</a></li>
           <li><a href="products.html">products</a></li>
+          <li><a href="index.html#about">who we are</a></li>
           <li><a href="#contact">contact</a></li>
           <li class="nav-cta"><a href="quick-quote.html" class="btn btn-small" aria-current="page">quick quote</a></li>
         </ul>
@@ -81,11 +83,13 @@
             <div class="field-row">
             <div class="field">
               <label for="first-name" class="sr-only">First name</label>
-              <input id="first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required>
+              <input id="first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required aria-describedby="first-name-error">
+              <p class="field-error" id="first-name-error" hidden></p>
             </div>
             <div class="field">
               <label for="last-name" class="sr-only">Last name</label>
-              <input id="last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required>
+              <input id="last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required aria-describedby="last-name-error">
+              <p class="field-error" id="last-name-error" hidden></p>
             </div>
             </div>
           </fieldset>
@@ -93,11 +97,13 @@
           <div class="field-row">
             <div class="field">
               <label for="email" class="field-label">Email <span class="req">*</span></label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-error">
+              <p class="field-error" id="email-error" hidden></p>
             </div>
             <div class="field">
               <label for="phone" class="field-label">Phone</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(608) 555-0123">
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(608) 555-0123" aria-describedby="phone-error">
+              <p class="field-error" id="phone-error" hidden></p>
             </div>
           </div>
 
@@ -107,6 +113,12 @@
               <label class="option"><input type="checkbox" name="services" value="Sand and Finish"><span>Sand and Finish</span></label>
               <label class="option"><input type="checkbox" name="services" value="Install"><span>Install</span></label>
               <label class="option"><input type="checkbox" name="services" value="Buff and Coat"><span>Buff and Coat</span></label>
+              <label class="option"><input type="checkbox" name="services" value="Other" data-other-toggle><span>Other</span></label>
+            </div>
+            <div class="field other-field" data-other-field hidden>
+              <label for="other-service" class="sr-only">Other service</label>
+              <input id="other-service" name="other_service" type="text" placeholder="What do you need? e.g. stair treads, repair" aria-describedby="other-service-error">
+              <p class="field-error" id="other-service-error" hidden></p>
             </div>
           </fieldset>
 
@@ -142,8 +154,10 @@
             <h2>Prefer to talk?</h2>
             <p>Call or text anytime, or send an email with photos of your floors.</p>
             <ul class="aside-links">
-              <li><a href="tel:6083974572"><span>call</span>(608) 397-4572</a></li>
-              <li><a href="sms:6083974572"><span>text</span>(608) 397-4572</a></li>
+              <li class="aside-phone">
+                <span><a href="tel:6083974572">call</a> / <a href="sms:6083974572">text</a></span>
+                <a href="tel:6083974572">(608) 397-4572</a>
+              </li>
               <li><a href="mailto:floors@groovebox.info"><span>email</span>floors@groovebox.info</a></li>
             </ul>
           </div>
@@ -163,7 +177,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" aria-label="Groove Hardwood Flooring — home">
-            <img class="footer-logo" src="images/logo-200.webp" alt="Groove Hardwood Flooring" loading="lazy">
+            <img class="footer-logo" src="images/logo-full.webp" width="320" height="516" alt="Groove Hardwood Flooring" loading="lazy">
           </a>
           <p>Where nature and design groove together.</p>
           <a href="quick-quote.html" class="btn btn-primary btn-small">Get a quick quote</a>
@@ -172,10 +186,10 @@
         <nav class="footer-col" aria-label="Footer">
           <h2 class="footer-heading">Explore</h2>
           <ul>
-            <li><a href="index.html#about">About</a></li>
             <li><a href="index.html#services">Services</a></li>
             <li><a href="portfolio.html">Portfolio</a></li>
             <li><a href="products.html">Products</a></li>
+            <li><a href="index.html#about">Who we are</a></li>
           </ul>
         </nav>
 
