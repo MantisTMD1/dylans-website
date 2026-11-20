@@ -2291,7 +2291,8 @@ body.is-leaving {
   transform: translateY(-100%);
 }
 
-/* Headline lines slide up from behind a mask */
+/* Headline lines rise into place one after another.
+   No overflow mask: Safari drew stray slivers of text along the mask edge. */
 .js .split-lines:not(.is-split) {
   visibility: hidden;
 }
@@ -2303,24 +2304,18 @@ body.is-leaving {
 
 .split-lines .line {
   display: block;
-  overflow: hidden;
-  padding-bottom: 0.2em;
-  margin-bottom: -0.2em;
-}
-
-.split-lines .line:last-child {
-  margin-bottom: 0;
 }
 
 .split-lines .line-inner {
   display: block;
-  transform: translateY(35%);
   animation: line-up 0.7s var(--ease) both;
   animation-delay: calc(var(--line, 0) * 0.06s);
 }
 
 @keyframes line-up {
-  to { transform: none; }
+  /* starts partly visible so the headline still counts as painted right away */
+  from { opacity: 0.35; transform: translateY(0.3em); }
+  to { opacity: 1; transform: none; }
 }
 
 /* Hero photo drifts slower than the page (parallax) */
@@ -2668,5 +2663,85 @@ img.lqip {
 
   .rating {
     margin-bottom: 1.5rem;
+  }
+}
+
+/* Review card over the hero photo (desktop only) */
+.hero-review {
+  display: none;
+}
+
+@media (min-width: 961px) {
+  /* Two-column grid: copy on the left, review card bottom-aligned with the buttons */
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto); /* rating, headline, lead, buttons */
+    column-gap: 6rem;
+  }
+
+  .hero-content > :not(.hero-review) {
+    grid-column: 1;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .hero-review {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: end;
+    justify-self: end;
+    width: min(340px, 100%);
+    margin: 0;
+    padding: 1.35rem 1.5rem 1.25rem;
+    border: 1px solid rgba(244, 239, 230, 0.16);
+    border-radius: var(--radius);
+    background: rgba(28, 20, 14, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--cream);
+    animation: rise 1s var(--ease) 0.5s both;
+  }
+
+  .hero-review-stars {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--tan);
+  }
+
+  .hero-review blockquote {
+    margin: 0 0 0.85rem;
+  }
+
+  .hero-review blockquote p {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.35;
+  }
+
+  .hero-review figcaption {
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
+  .hero-review figcaption a {
+    color: inherit;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(201, 181, 149, 0.6);
+  }
+
+  .hero-review figcaption a:hover {
+    color: var(--tan);
+  }
+}
+
+@media (min-width: 961px) and (prefers-reduced-motion: reduce) {
+  .hero-review {
+    animation: none;
   }
 }
