@@ -317,6 +317,10 @@ body.nav-open .site-header::before {
   z-index: 60; /* stay visible above the open mobile menu */
 }
 
+.logo picture {
+  display: block;
+}
+
 .logo img {
   /* just the "g" mark; the full logo with "hardwood flooring" is in the footer */
   height: 52px;
@@ -2632,7 +2636,69 @@ img.lqip {
 
 .page-hero-photo::after {
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 35%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.05) 70%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 70%);
+    /* same warm brown + amber treatment as the home hero */
+    radial-gradient(90% 80% at 85% 10%, rgba(214, 150, 80, 0.26) 0%, rgba(214, 150, 80, 0) 65%),
+    linear-gradient(180deg, rgba(38, 24, 12, 0.5) 0%, rgba(38, 24, 12, 0) 35%),
+    linear-gradient(90deg, rgba(38, 24, 12, 0.55) 0%, rgba(38, 24, 12, 0.05) 70%),
+    linear-gradient(0deg, rgba(34, 21, 10, 0.75) 0%, rgba(60, 36, 16, 0.25) 70%);
+}
+
+/* Desktop: full horizontal "groove hardwood flooring" wordmark in the header */
+@media (min-width: 861px) {
+  .logo img {
+    height: 64px;
+  }
+
+  .site-header.is-scrolled .logo img {
+    height: 52px;
+  }
+}
+
+/* ==========================================================
+   Desktop hero: copy on the left, photo on the right,
+   so the headline and quote buttons all sit above the fold
+   ========================================================== */
+@media (min-width: 961px) {
+  .hero {
+    min-height: clamp(640px, 100svh, 920px);
+    align-items: center;
+    padding: calc(var(--header-height) + 1.5rem) 0 3.5rem;
+    background:
+      radial-gradient(70% 60% at 0% 100%, rgba(120, 72, 30, 0.35) 0%, rgba(120, 72, 30, 0) 70%),
+      radial-gradient(60% 50% at 40% 0%, rgba(214, 150, 80, 0.12) 0%, rgba(214, 150, 80, 0) 70%),
+      #241b14;
+  }
+
+  .hero-bg {
+    left: 50%;
+    width: 50%;
+    transform-origin: left center; /* the slow zoom grows away from the copy */
+  }
+
+  .hero::after {
+    left: 50%;
+    background:
+      radial-gradient(90% 70% at 85% 15%, rgba(214, 150, 80, 0.22) 0%, rgba(214, 150, 80, 0) 65%),
+      linear-gradient(180deg, rgba(38, 24, 12, 0.5) 0%, rgba(38, 24, 12, 0) 28%),
+      linear-gradient(90deg, rgba(36, 27, 20, 0.55) 0%, rgba(36, 27, 20, 0) 22%),
+      linear-gradient(0deg, rgba(34, 21, 10, 0.25) 0%, rgba(34, 21, 10, 0) 40%);
+  }
+
+  /* keep every line of copy inside the left half */
+  .hero-content > * {
+    max-width: calc(50vw - max(0px, (100vw - var(--max-width)) / 2) - var(--gutter) - 3rem);
+  }
+
+  .hero h1 {
+    font-size: clamp(3.25rem, 5.4vw, 5.75rem);
+    line-height: 0.98;
+  }
+
+  .hero-lead {
+    margin-bottom: 2rem;
+  }
+
+  .rating {
+    margin-bottom: 1.5rem;
+  }
 }
