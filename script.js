@@ -76,6 +76,68 @@ document.querySelectorAll(".hero h1, .page-hero h1").forEach((h1) => {
   h1.classList.add("is-split");
 });
 
+// ---------- Hero review card: cycle through review excerpts ----------
+const rotator = document.querySelector("[data-review-rotator]");
+
+if (rotator) {
+  const slides = [...rotator.querySelectorAll("[data-review-slide]")];
+  const dotsWrap = rotator.querySelector("[data-review-dots]");
+  const INTERVAL = 6000;
+  let current = 0;
+  let timer = null;
+
+  const dots = slides.map((_, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.setAttribute("aria-label", `Show review ${i + 1} of ${slides.length}`);
+    dot.addEventListener("click", () => {
+      show(i);
+      restart();
+    });
+    dotsWrap.append(dot);
+    return dot;
+  });
+
+  function show(index) {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const active = i === current;
+      slide.classList.toggle("is-active", active);
+      slide.toggleAttribute("aria-hidden", !active);
+      slide.querySelectorAll("a").forEach((a) => (active ? a.removeAttribute("tabindex") : a.setAttribute("tabindex", "-1")));
+      dots[i].setAttribute("aria-current", active ? "true" : "false");
+    });
+  }
+
+  const stop = () => {
+    clearInterval(timer);
+    timer = null;
+  };
+
+  const start = () => {
+    // Visitors who prefer reduced motion can still step through with the dots
+    if (reduceMotion || timer || document.hidden) return;
+    timer = setInterval(() => show(current + 1), INTERVAL);
+  };
+
+  const restart = () => {
+    stop();
+    start();
+  };
+
+  // Pause while someone is reading or using the card, or the tab is hidden
+  rotator.addEventListener("mouseenter", stop);
+  rotator.addEventListener("mouseleave", start);
+  rotator.addEventListener("focusin", stop);
+  rotator.addEventListener("focusout", (e) => {
+    if (!rotator.contains(e.relatedTarget)) start();
+  });
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+
+  show(0);
+  start();
+}
+
 // ---------- In-page jumps (e.g. "15 Google reviews" → #reviews) ----------
 // The browser's own jump leaves room for the header, but the header hides
 // itself when scrolling down — leaving a gap. Work out the landing spot here.

@@ -108,13 +108,36 @@
           </div>
         </div>
 
-        <!-- Desktop only: a real Google review over the hero photo -->
-        <figure class="hero-review">
+        <!-- Desktop only: real Google review excerpts, rotating over the hero photo -->
+        <figure class="hero-review" data-review-rotator aria-roledescription="carousel" aria-label="Customer reviews">
           <span class="hero-review-stars" aria-label="5 out of 5 stars">★★★★★</span>
-          <blockquote>
-            <p>“If you want something done well and right — he’s definitely your guy.”</p>
-          </blockquote>
-          <figcaption>Bryanna G. · <a href="#reviews">Google review</a></figcaption>
+          <div class="hero-review-slides">
+            <div class="hero-review-slide is-active" data-review-slide>
+              <blockquote><p>“If you want something done well and right — he’s definitely your guy.”</p></blockquote>
+              <p class="hero-review-cite">Bryanna G. · <a href="#reviews">Google review</a></p>
+            </div>
+            <div class="hero-review-slide" data-review-slide aria-hidden="true">
+              <blockquote><p>“Dylan worked quickly but maintained great attention to detail.”</p></blockquote>
+              <p class="hero-review-cite">Garret W. · <a href="#reviews" tabindex="-1">Google review</a></p>
+            </div>
+            <div class="hero-review-slide" data-review-slide aria-hidden="true">
+              <blockquote><p>“Remodels can be tedious, but Dylan made it feel creative and relatively painless.”</p></blockquote>
+              <p class="hero-review-cite">Debbie G. · <a href="#reviews" tabindex="-1">Google review</a></p>
+            </div>
+            <div class="hero-review-slide" data-review-slide aria-hidden="true">
+              <blockquote><p>“Dylan came up with a solution that was very attractive and affordable.”</p></blockquote>
+              <p class="hero-review-cite">Kim K. · <a href="#reviews" tabindex="-1">Google review</a></p>
+            </div>
+            <div class="hero-review-slide" data-review-slide aria-hidden="true">
+              <blockquote><p>“When the time came for installation everything went so smooth.”</p></blockquote>
+              <p class="hero-review-cite">Tyler T. · <a href="#reviews" tabindex="-1">Google review</a></p>
+            </div>
+            <div class="hero-review-slide" data-review-slide aria-hidden="true">
+              <blockquote><p>“Dylan did a fantastic job on our carpeted stair to wood floor conversion.”</p></blockquote>
+              <p class="hero-review-cite">Derek P. · <a href="#reviews" tabindex="-1">Google review</a></p>
+            </div>
+          </div>
+          <div class="hero-review-dots" data-review-dots></div>
         </figure>
       </div>
     </section>

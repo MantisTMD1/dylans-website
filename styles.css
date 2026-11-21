@@ -721,6 +721,7 @@ body.nav-open .site-header::before {
 }
 
 .service-icon {
+  grid-column: -2 / -1; /* always the last column, even when a row has no tag */
   position: relative;
   width: 2.5rem;
   height: 2.5rem;
@@ -2724,18 +2725,19 @@ img.lqip {
     line-height: 1.35;
   }
 
-  .hero-review figcaption {
+  .hero-review-cite {
+    margin: 0;
     font-size: 0.8rem;
     opacity: 0.85;
   }
 
-  .hero-review figcaption a {
+  .hero-review-cite a {
     color: inherit;
     text-underline-offset: 3px;
     text-decoration-color: rgba(201, 181, 149, 0.6);
   }
 
-  .hero-review figcaption a:hover {
+  .hero-review-cite a:hover {
     color: var(--tan);
   }
 }
@@ -2744,4 +2746,64 @@ img.lqip {
   .hero-review {
     animation: none;
   }
+}
+
+/* Rotating review excerpts: every slide shares one grid cell, so the card
+   is always as tall as the longest quote and never jumps */
+.hero-review-slides {
+  display: grid;
+}
+
+.hero-review-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), visibility 0s linear 0.6s;
+}
+
+.hero-review-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.6s var(--ease) 0.15s, transform 0.6s var(--ease) 0.15s, visibility 0s;
+}
+
+.hero-review-dots {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.hero-review-dots button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.hero-review-dots button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(244, 239, 230, 0.35);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.hero-review-dots button[aria-current="true"]::before {
+  background: var(--tan);
+  transform: scale(1.3);
+}
+
+.hero-review-dots button:focus-visible {
+  outline: 2px solid var(--tan);
+  outline-offset: 0;
+  border-radius: 50%;
 }
